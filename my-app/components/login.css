@@ -1,0 +1,15 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+input{
+    margin-bottom: 15px;
+}
+
+.err-msg{
+    color: red;
+}
