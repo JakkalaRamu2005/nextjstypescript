@@ -74,8 +74,13 @@ const Login = () => {
                     <a className="redirect" href="/register">Register here</a>
                 </p>
 
+                <p style={{color: "black"}}>
+                    <a href="/forgotpassword">Forget Password</a>
+                </p>
+
             </form>
             <p className="err-msg">{msg}</p>
+
 
 
         </div>

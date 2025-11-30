@@ -4,7 +4,7 @@ import { unique } from "next/dist/build/utils";
 
 const UserSchema = new mongoose.Schema({
 
-username: {
+name: {
     type: String,
     required: true,
 },
