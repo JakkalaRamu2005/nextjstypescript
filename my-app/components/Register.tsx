@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import "./style/login.css"
+import "./style/register.css"
 
 const Register = () => {
 
@@ -52,40 +52,58 @@ const Register = () => {
 
 
     return (
-        <div className='container'>
-            <h2>Register</h2>
+        <div className='register-container'>
+            <div className="register-box">
+                <h2 className="register-title">Create Account</h2>
+                <p className="register-subtitle">Join us today</p>
 
+                <form onSubmit={handleRegister} className="register-form">
+                    <div className="input-group">
+                        <label htmlFor="name" className="input-label">Name</label>
+                        <input
+                            id="name"
+                            onChange={(e) => setName(e.target.value)}
+                            value={name}
+                            type="text"
+                            placeholder='Enter your name'
+                            className="input-field"
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="email" className="input-label">Email</label>
+                        <input
+                            id="email"
+                            onChange={(e) => setMail(e.target.value)}
+                            value={email}
+                            type="email"
+                            placeholder='Enter your email'
+                            className="input-field"
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="password" className="input-label">Password</label>
+                        <input
+                            id="password"
+                            onChange={(e) => setPassword(e.target.value)}
+                            value={password}
+                            type="password"
+                            placeholder='Enter your password'
+                            className="input-field"
+                        />
+                    </div>
 
+                    <button type='submit' className="register-btn">Register</button>
 
-            <form onSubmit={handleRegister}>
-                <div>
-                    <label>Name:</label>
-                    <input onChange={(e) => setName(e.target.value)} value={name} type="text" placeholder='Enter your name' />
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input onChange={(e) => setMail(e.target.value)} value={email} type="text" placeholder='Enter your email' />
-                </div>
-                <div>
-                    <label>password:</label>
-                    <input onChange={(e) => setPassword(e.target.value)} value={password} type="text" placeholder='Enter your password' />
-                </div>
+                    {msg && <p className="message-text">{msg}</p>}
 
-
-                <button type='submit'>Register</button>
-                <p>
-                    Already have an account?
-                    <a className='redirect' href="/login">Login here</a>
-                </p>
-
-            </form>
-
-
-            <p className='err-msg'>{msg}</p>
-
-
-
+                    <p className="login-text">
+                        Already have an account?
+                        <a className='link' href="/login"> Login here</a>
+                    </p>
+                </form>
+            </div>
         </div>
+
     )
 }
 

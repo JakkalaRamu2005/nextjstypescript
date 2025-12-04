@@ -15,7 +15,7 @@ export default function RootLayout({
 const pathname = usePathname();
 
 
-const noNavbarPages = ["/login", "/register", "/forgotpassword", "/resetpassword"];
+const noNavbarPages = ["/login", "/register", "/forgotpassword", "/reset-password"];
 
 const showNavbar = !noNavbarPages.includes(pathname);
 

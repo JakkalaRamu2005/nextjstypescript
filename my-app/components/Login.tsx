@@ -3,6 +3,7 @@ import "./style/login.css"
 import { useState } from 'react'
 import { useRouter } from "next/navigation"
 
+
 const Login = () => {
 
     const router = useRouter();
@@ -10,7 +11,6 @@ const Login = () => {
     const [email, setMail] = useState("");
     const [password, setPassword] = useState("");
     const [msg, setMsg] = useState("");
-
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -21,8 +21,6 @@ const Login = () => {
         }
 
         setMsg("Loading ....")
-
-
 
         try {
             const res = await fetch("/api/login", {
@@ -35,7 +33,6 @@ const Login = () => {
                 }),
             });
 
-
             const data = await res.json();
 
             if (!res.ok) {
@@ -46,47 +43,59 @@ const Login = () => {
             setMsg("Login successful");
             router.push("/")
 
-
         } catch (error) {
             setMsg("Something went wrong");
-        };
+        }
     }
 
-
-
-
     return (
-        <div className='container'>
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label htmlFor="">Email:</label>
-                    <input onChange={(e) => setMail(e.target.value)} value={email} type="text" placeholder='Enter the mail' />
+        <div className='login-container'>
+            <div className="login-box">
+                <h2 className="login-title">Welcome Back</h2>
+                <p className="login-subtitle">Please login to your account</p>
+                
+                <form onSubmit={handleLogin} className="login-form">
+                    <div className="input-group">
+                        <label htmlFor="email" className="input-label">Email</label>
+                        <input 
+                            id="email"
+                            onChange={(e) => setMail(e.target.value)} 
+                            value={email} 
+                            type="email" 
+                            placeholder='Enter your email' 
+                            className="input-field"
+                        />
+                    </div>
 
-                </div>
-                <div>
-                    <label htmlFor="">Password:</label>
-                    <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Enter the password' />
+                    <div className="input-group">
+                        <label htmlFor="password" className="input-label">Password</label>
+                        <input 
+                            id="password"
+                            type="password" 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                            placeholder='Enter your password' 
+                            className="input-field"
+                        />
+                    </div>
 
-                </div>
-                <button type='submit'>Login</button>
-                <p>
-                    Don't have an account?
-                    <a className="redirect" href="/register">Register here</a>
-                </p>
+                    <button type='submit' className="login-btn">Login</button>
 
-                <p style={{color: "black"}}>
-                    <a href="/forgotpassword">Forget Password</a>
-                </p>
+                    {msg && <p className="message-text">{msg}</p>}
 
-            </form>
-            <p className="err-msg">{msg}</p>
-
-
-
+                    <div className="form-links">
+                        <p className="register-text">
+                            Don't have an account? 
+                            <a className="link" href="/register"> Register here</a>
+                        </p>
+                        <p className="forgot-text">
+                            <a href="/forgotpassword" className="link">Forgot Password?</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }
-
-
 
 export default Login
