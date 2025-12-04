@@ -1,20 +1,15 @@
 "use client"
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from "next/navigation"
-import "./style/resetpassword.css"
+import "./style/reset-password.css"
 
-
-export default function ResetPassword() {
+function ResetPasswordForm() {
     const [newPassword, setNewPassword] = useState("");
     const [msg, setMsg] = useState("");
-
     const router = useRouter();
-
     const searchParams = useSearchParams();
-
     const token = searchParams.get("token");
-
 
     const handleReset = async (e: any) => {
         e.preventDefault();
@@ -27,11 +22,10 @@ export default function ResetPassword() {
 
         const data = await res.json();
         setMsg(data.message);
-
-        router.push('/login');
-
-
-
+        
+        if (res.ok) {
+            router.push('/login');
+        }
     }
 
     return (
@@ -59,6 +53,13 @@ export default function ResetPassword() {
                 </form>
             </div>
         </div>
+    )
+}
 
+export default function ResetPassword() {
+    return (
+        <Suspense fallback={<div className="loading">Loading...</div>}>
+            <ResetPasswordForm />
+        </Suspense>
     )
 }
