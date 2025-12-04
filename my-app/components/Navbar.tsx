@@ -1,32 +1,47 @@
 "use client"
-import "./style/navbar.css"
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import "./style/navbar.css"
 
 export default function Navbar() {
-
     const router = useRouter();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleLogout = async () => {
-        const res = await fetch("/api/logout", {
-            method: "POST",
-        });
+        try {
+            const res = await fetch("/api/logout", {
+                method: "POST",
+            });
 
-        if (res.ok) {
-            router.push("/login");
+            if (res.ok) {
+                router.push("/login");
+            }
+        } catch (error) {
+            console.error("Logout error:", error);
         }
     };
 
-    return (
-        <nav>
-            <div>
-                <h2>AI Tools Hub</h2>
-            </div>
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
 
-            <div>
-                <a href="/">Home</a>
-                <a href="/tools">AI Tools</a>
-                <a href="/profile">Profile</a>
-                <button onClick={handleLogout}>Logout</button>
+    return (
+        <nav className="navbar">
+            <div className="navbar-container">
+                <div className="navbar-logo">
+                    <h2>AI Tools Hub</h2>
+                </div>
+
+                <button className="menu-toggle" onClick={toggleMenu}>
+                    {isMenuOpen ? "✕" : "☰"}
+                </button>
+
+                <div className={`navbar-links ${isMenuOpen ? "active" : ""}`}>
+                    <a href="/" className="nav-link">Home</a>
+                    <a href="/tools" className="nav-link">AI Tools</a>
+                    <a href="/profile" className="nav-link">Profile</a>
+                    <button onClick={handleLogout} className="logout-btn">Logout</button>
+                </div>
             </div>
         </nav>
     );

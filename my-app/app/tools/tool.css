@@ -1,50 +1,202 @@
-/* Page container */
-div {
-  padding: 20px;
-  max-width: 700px;
-  margin: auto;
-  font-family: sans-serif;
+.tools-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 40px 20px;
 }
 
-/* Headings */
-h1 {
-  margin-bottom: 20px;
+.tools-title {
+    font-size: 36px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
-/* Search + Category dropdown */
-input,
-select {
-  padding: 8px;
-  margin-right: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.tools-subtitle {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 40px;
+    font-size: 16px;
 }
 
-/* Each tool box */
-div > div {
-  padding: 15px;
-  border: 1px solid #ddd;
-  margin-bottom: 15px;
-  border-radius: 6px;
+.filter-section {
+    max-width: 1200px;
+    margin: 0 auto 30px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Tool title */
-h3 {
-  margin: 0 0 10px 0;
+.search-box {
+    flex: 1;
+    min-width: 250px;
 }
 
-/* Links */
-a {
-  color: blue;
-  text-decoration: none;
+.search-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s;
 }
 
-a:hover {
-  text-decoration: underline;
+.search-input:focus {
+    outline: none;
+    border-color: #667eea;
 }
 
-/* Separator */
-hr {
-  margin-top: 15px;
+.category-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+}
+
+.category-select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    background: white;
+    transition: border-color 0.3s;
+}
+
+.category-select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.results-count {
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.no-results {
+    background: white;
+    padding: 60px 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.no-results p {
+    color: #666;
+    font-size: 16px;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tool-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.tool-card:hover {
+    transform: translateY(-5px);
+}
+
+.tool-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.tool-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.save-btn {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.3s;
+}
+
+.save-btn:hover {
+    color: #ffd700;
+}
+
+.save-btn.saved {
+    color: #ffd700;
+}
+
+.tool-category {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.tool-description {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.tool-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.tool-pricing {
+    font-weight: 600;
+    color: #667eea;
+    font-size: 14px;
+}
+
+.tool-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.tool-link:hover {
+    text-decoration: underline;
+}
+
+.loading {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 20px;
 }

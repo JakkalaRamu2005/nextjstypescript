@@ -1,43 +1,105 @@
-nav {
+.navbar {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 30px;
-    background-color: #333;
-    color: white;
 }
 
-nav h2 {
-    margin: 0;
+.navbar-logo h2 {
     font-size: 24px;
+    font-weight: bold;
+    color: #667eea;
+    margin: 0;
 }
 
-nav div {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-}
-
-nav a:hover {
-    color: #ddd;
-}
-
-nav button {
-    background-color: #ff4444;
-    color: white;
+.menu-toggle {
+    display: none;
+    background: transparent;
     border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
+    font-size: 28px;
     cursor: pointer;
-    font-size: 16px;
+    color: #667eea;
 }
 
-nav button:hover {
-    background-color: #cc0000;
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-link {
+    color: #333;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+
+.nav-link:hover {
+    background: #f0f0f0;
+    color: #667eea;
+}
+
+.logout-btn {
+    background: #667eea;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.logout-btn:hover {
+    background: #5568d3;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .navbar-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: none;
+        gap: 15px;
+    }
+
+    .navbar-links.active {
+        display: flex;
+    }
+
+    .nav-link {
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+    }
+
+    .logout-btn {
+        width: 100%;
+        padding: 12px;
+    }
 }
