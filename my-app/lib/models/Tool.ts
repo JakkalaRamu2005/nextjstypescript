@@ -32,4 +32,4 @@ const ToolSchema = new mongoose.Schema({
     }
 })
 
-export default mongoose.models.Tool 
+export default mongoose.models.Tool || mongoose.model("Tool", ToolSchema);

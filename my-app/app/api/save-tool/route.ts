@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
         const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
         const { toolId } = await req.json();
 
-        const user = await User.findById(decoded.userId);
+        const user = await User.findById(decoded.id);
 
         if (!user) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
         }
 
     } catch (error) {
+        console.log("Save tool error:", error);
         return NextResponse.json({ message: "Server error" }, { status: 500 });
     }
 }

@@ -31,7 +31,8 @@ export async function GET(req: Request) {
             email: user.email,
             place: user.place,
             bio: user.bio,
-            profileImage: user.profileImage
+            profileImage: user.profileImage,
+            savedTools: user.savedTools
         });
     } catch (error) {
         return NextResponse.json({ message: "Invalid token" }, { status: 401 });

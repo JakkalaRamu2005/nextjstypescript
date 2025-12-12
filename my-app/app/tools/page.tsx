@@ -130,8 +130,8 @@ export default function Tools() {
                 </div>
             ) : (
                 <div className="tools-grid">
-                    {filteredTools.map((tool: any) => (
-                        <div key={tool._id} className="tool-card">
+                    {filteredTools.map((tool: any, index:number) => (
+                        <div key={index} className="tool-card">
                             <div className="tool-header">
                                 <h3 className="tool-name">{tool.name}</h3>
                                 <button

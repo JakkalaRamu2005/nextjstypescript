@@ -20,7 +20,8 @@ if(!user){
 
 const resetToken = jwt.sign({id: user._id}, process.env.JWT_SECRET!, {expiresIn: "15m"});
 
-const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
+const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/reset-password?token=${resetToken}`;
+
 
 const emailSent = await sendResetEmail(email, resetLink);
 

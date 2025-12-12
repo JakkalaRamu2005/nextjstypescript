@@ -1,119 +1,270 @@
-"use client"
+"use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Navbar from "@/components/Navbar";
+import Link from "next/link";
 import "./style/home.css"
 
-export default function Home() {
-    const router = useRouter();
-    const [userName, setUserName] = useState("");
-    const [totalTools, setTotalTools] = useState(0);
-    const [savedToolsCount, setSavedToolsCount] = useState(0);
+interface Stats {
+  resources: number;
+  videos: number;
+  tools: number;
+}
 
-    useEffect(() => {
-        fetchUserData();
-        fetchToolsCount();
-    }, []);
+interface FeaturedItem {
+  id: string;
+  type: "course" | "video" | "tool" | "project";
+  title: string;
+  description: string;
+  link: string;
+  image?: string;
+  category?: string;
+}
 
-    const fetchUserData = async () => {
-        try {
-            const res = await fetch("/api/profile", {
-                credentials: "include",
-            });
+export default function HomePage() {
+  const [stats, setStats] = useState<Stats>({
+    resources: 0,
+    videos: 0,
+    tools: 0,
+  });
+  const [featured, setFeatured] = useState<FeaturedItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-            if (res.ok) {
-                const data = await res.json();
-                setUserName(data.name);
-                setSavedToolsCount(data.savedTools?.length || 0);
-            }
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-        }
-    };
+  useEffect(() => {
+    fetchHomeData();
+  }, []);
 
-    const fetchToolsCount = async () => {
-        try {
-            const res = await fetch("/api/tools");
-            const data = await res.json();
-            setTotalTools(data.total || 0);
-        } catch (error) {
-            console.error("Error fetching tools count:", error);
-        }
-    };
+  const fetchHomeData = async () => {
+    try {
+      setTimeout(() => {
+        setStats({
+          resources: 250,
+          videos: 180,
+          tools: 120,
+        });
 
+        setFeatured([
+          {
+            id: "1",
+            type: "course",
+            title: "Complete Prompt Engineering Masterclass",
+            description: "Learn prompt engineering from basics to advanced in 30 days",
+            link: "/learn/prompt-engineering",
+            category: "Featured Course",
+          },
+          {
+            id: "2",
+            type: "video",
+            title: "Building AI Agents with ChatGPT",
+            description: "Step-by-step tutorial on creating custom AI agents",
+            link: "/youtube",
+            category: "Trending Video",
+          },
+          {
+            id: "3",
+            type: "tool",
+            title: "Claude 3.5 Sonnet",
+            description: "Anthropic's latest AI model with enhanced coding abilities",
+            link: "/tools",
+            category: "Hot Tool",
+          },
+          {
+            id: "4",
+            type: "project",
+            title: "AI-Powered Resume Builder",
+            description: "Student project showcasing AI integration",
+            link: "/projects",
+            category: "Community Project",
+          },
+        ]);
+
+        setLoading(false);
+      }, 1000);
+    } catch (error) {
+      console.error("Error fetching home data:", error);
+      setLoading(false);
+    }
+  };
+
+  const learningPaths = [
+    {
+      id: "student",
+      title: "I'm a Student",
+      description: "Perfect for college students wanting to learn AI skills",
+      icon: "🎓",
+      link: "/learn/student-path",
+      color: "blue",
+    },
+    {
+      id: "professional",
+      title: "I'm a Professional",
+      description: "Switch your career to AI and machine learning",
+      icon: "💼",
+      link: "/learn/professional-path",
+      color: "purple",
+    },
+    {
+      id: "developer",
+      title: "I'm a Developer",
+      description: "Deep dive into AI engineering and development",
+      icon: "👨‍💻",
+      link: "/learn/developer-path",
+      color: "green",
+    },
+    {
+      id: "quick",
+      title: "I want Quick Skills",
+      description: "Master prompt engineering in days, not months",
+      icon: "⚡",
+      link: "/prompts",
+      color: "orange",
+    },
+  ];
+
+  const getFeaturedIcon = (type: string) => {
+    switch (type) {
+      case "course":
+        return "📚";
+      case "video":
+        return "🎥";
+      case "tool":
+        return "🛠️";
+      case "project":
+        return "🚀";
+      default:
+        return "✨";
+    }
+  };
+
+  if (loading) {
     return (
-        <div>
-            
-            <div className="home-container">
-                <div className="welcome-section">
-                    <h1 className="welcome-title">Welcome back, {userName || "User"}! 👋</h1>
-                    <p className="welcome-subtitle">Discover the latest AI tools updated weekly</p>
-                </div>
-
-                <div className="stats-section">
-                    <div className="stat-card">
-                        <div className="stat-icon">🤖</div>
-                        <div className="stat-info">
-                            <h3 className="stat-number">{totalTools}</h3>
-                            <p className="stat-label">Total AI Tools</p>
-                        </div>
-                    </div>
-
-                    <div className="stat-card">
-                        <div className="stat-icon">⭐</div>
-                        <div className="stat-info">
-                            <h3 className="stat-number">{savedToolsCount}</h3>
-                            <p className="stat-label">Saved Tools</p>
-                        </div>
-                    </div>
-
-                    <div className="stat-card">
-                        <div className="stat-icon">📅</div>
-                        <div className="stat-info">
-                            <h3 className="stat-number">Weekly</h3>
-                            <p className="stat-label">New Updates</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="content-section">
-                    <h2 className="section-title">What we offer:</h2>
-                    <div className="features-grid">
-                        <div className="feature-card">
-                            <span className="feature-icon">🚀</span>
-                            <h3>Latest AI Tools</h3>
-                            <p>Discover new AI tools updated every week</p>
-                        </div>
-
-                        <div className="feature-card">
-                            <span className="feature-icon">📂</span>
-                            <h3>Categorized</h3>
-                            <p>Tools organized by category for easy browsing</p>
-                        </div>
-
-                        <div className="feature-card">
-                            <span className="feature-icon">💰</span>
-                            <h3>Free & Paid</h3>
-                            <p>Both free and premium options available</p>
-                        </div>
-
-                        <div className="feature-card">
-                            <span className="feature-icon">🔗</span>
-                            <h3>Direct Links</h3>
-                            <p>Quick access to try tools instantly</p>
-                        </div>
-                    </div>
-
-                    <div className="action-buttons">
-                        <button onClick={() => router.push("/tools")} className="browse-btn">
-                            Browse AI Tools →
-                        </button>
-                        <button onClick={() => router.push("/profile")} className="profile-btn">
-                            View Profile
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div className="loading">
+        <div className="spinner"></div>
+        <p>Loading AI Learning Hub...</p>
+      </div>
     );
+  }
+
+  return (
+    <div className="homepage">
+      {/* Hero Section */}
+      <section className="hero">
+        <div className="hero-content">
+          <h1 className="hero-title">
+            Learn AI Free. Master Prompt Engineering.
+            <span className="highlight"> Build Real Projects.</span>
+          </h1>
+          <p className="hero-subtext">
+            Structured learning paths from zero to expert. No credit card needed.
+          </p>
+          <div className="cta-buttons">
+            <Link href="/learn" className="btn btn-primary">
+              Start Learning (Free)
+            </Link>
+            <Link href="/tools" className="btn btn-secondary">
+              Explore AI Tools
+            </Link>
+          </div>
+
+          {/* Animated Stats Counter */}
+          <div className="stats-counter">
+            <div className="stat-item">
+              <span className="stat-number">
+                {stats.resources.toLocaleString()}+
+              </span>
+              <span className="stat-label">Free Resources</span>
+            </div>
+            <div className="stat-divider">|</div>
+            <div className="stat-item">
+              <span className="stat-number">
+                {stats.videos.toLocaleString()}+
+              </span>
+              <span className="stat-label">YouTube Videos</span>
+            </div>
+            <div className="stat-divider">|</div>
+            <div className="stat-item">
+              <span className="stat-number">
+                {stats.tools.toLocaleString()}+
+              </span>
+              <span className="stat-label">AI Tools</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Path Selector */}
+      <section className="path-selector">
+        <h2 className="section-title">Choose Your Learning Path</h2>
+        <p className="section-subtitle">
+          Select the path that matches your goals and get started today
+        </p>
+
+        <div className="path-grid">
+          {learningPaths.map((path) => (
+            <Link
+              key={path.id}
+              href={path.link}
+              className={`path-card path-card-${path.color}`}
+            >
+              <div className="path-icon">{path.icon}</div>
+              <h3 className="path-title">{path.title}</h3>
+              <p className="path-description">{path.description}</p>
+              <div className="path-arrow">→</div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured This Week */}
+      <section className="featured">
+        <h2 className="section-title">Featured This Week</h2>
+        <p className="section-subtitle">
+          Handpicked resources to accelerate your AI learning journey
+        </p>
+
+        <div className="featured-grid">
+          {featured.map((item) => (
+            <Link key={item.id} href={item.link} className="featured-card">
+              <div className="featured-header">
+                <span className="featured-icon">
+                  {getFeaturedIcon(item.type)}
+                </span>
+                <span className="featured-category">{item.category}</span>
+              </div>
+              <h3 className="featured-title">{item.title}</h3>
+              <p className="featured-description">{item.description}</p>
+              <div className="featured-footer">
+                <span className="featured-link">
+                  Learn more <span className="arrow">→</span>
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Statistics Dashboard */}
+      <section className="dashboard">
+        <div className="dashboard-content">
+          <h2 className="section-title dashboard-title">Trusted by Learners Worldwide</h2>
+          <div className="dashboard-stats">
+            <div className="dashboard-item">
+              <h3 className="dashboard-number">100%</h3>
+              <p className="dashboard-label">Free Forever</p>
+            </div>
+            <div className="dashboard-item">
+              <h3 className="dashboard-number">500+</h3>
+              <p className="dashboard-label">Hours of Content</p>
+            </div>
+            <div className="dashboard-item">
+              <h3 className="dashboard-number">10K+</h3>
+              <p className="dashboard-label">Active Learners</p>
+            </div>
+            <div className="dashboard-item">
+              <h3 className="dashboard-number">24/7</h3>
+              <p className="dashboard-label">Access Anytime</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }
