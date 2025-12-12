@@ -3,17 +3,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f9fafb;
+    background: var(--primary-gradient);
+    padding: 20px;
 }
 
 .verify-card {
     max-width: 28rem;
     width: 100%;
     background-color: white;
-    padding: 2rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
     text-align: center;
+    animation: fadeInUp 0.5s ease;
 }
 
 .verify-content {
@@ -22,80 +24,92 @@
     align-items: center;
 }
 
-/* Loading Spinner */
+/* Loading Spinner - Using Global Variables */
 .spinner {
-    border: 3px solid #f3f4f6;
-    border-top: 3px solid #3b82f6;
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--bg-tertiary);
+    border-top-color: var(--secondary-color);
     border-radius: 50%;
-    width: 3rem;
-    height: 3rem;
     animation: spin 1s linear infinite;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
+/* Use global keyframes from globals.css */
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .verify-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1f2937;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
 }
 
 /* Success State */
 .icon-success {
     color: #10b981;
     font-size: 4rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.5s ease;
 }
 
 .title-success {
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1.75rem;
+    font-weight: 800;
     color: #10b981;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 /* Error State */
 .icon-error {
     color: #ef4444;
     font-size: 4rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.5s ease;
 }
 
 .title-error {
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1.75rem;
+    font-weight: 800;
     color: #ef4444;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 /* Messages */
 .verify-message {
-    color: #4b5563;
-    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
 }
 
 .redirect-text {
-    font-size: 0.875rem;
-    color: #6b7280;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-style: italic;
 }
 
 /* Button */
 .verify-button {
-    background-color: #3b82f6;
+    background: var(--secondary-color);
     color: white;
-    padding: 0.5rem 1.5rem;
-    border-radius: 0.375rem;
+    padding: 14px 32px;
+    border-radius: var(--radius-sm);
     border: none;
     cursor: pointer;
     font-size: 1rem;
-    margin-top: 1rem;
-    transition: background-color 0.3s ease;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    transition: var(--transition-fast);
+    box-shadow: var(--shadow-md);
 }
 
 .verify-button:hover {
-    background-color: #2563eb;
+    background-color: #5568d3;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
 }

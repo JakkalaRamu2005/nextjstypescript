@@ -90,7 +90,7 @@ export default function HomePage() {
       title: "I'm a Student",
       description: "Perfect for college students wanting to learn AI skills",
       icon: "🎓",
-      link: "/learn/student-path",
+      link: "/learn#ai-for-students",
       color: "blue",
     },
     {
@@ -98,7 +98,7 @@ export default function HomePage() {
       title: "I'm a Professional",
       description: "Switch your career to AI and machine learning",
       icon: "💼",
-      link: "/learn/professional-path",
+      link: "/learn#business-ai-automation",
       color: "purple",
     },
     {
@@ -106,7 +106,7 @@ export default function HomePage() {
       title: "I'm a Developer",
       description: "Deep dive into AI engineering and development",
       icon: "👨‍💻",
-      link: "/learn/developer-path",
+      link: "/learn#ai-developer-track",
       color: "green",
     },
     {
@@ -114,7 +114,7 @@ export default function HomePage() {
       title: "I want Quick Skills",
       description: "Master prompt engineering in days, not months",
       icon: "⚡",
-      link: "/prompts",
+      link: "/learn#prompt-engineering-mastery",
       color: "orange",
     },
   ];
