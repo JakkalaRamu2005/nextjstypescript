@@ -2,6 +2,39 @@
 import { useState, useEffect } from "react"
 import "./tool.css"
 
+const ToolCard = ({ tool, isSaved, onToggleSave }: { tool: any, isSaved: boolean, onToggleSave: (id: string) => void }) => {
+    const [expanded, setExpanded] = useState(false);
+
+    return (
+        <div className="tool-card">
+            <div className="tool-header">
+                <h3 className="tool-name">{tool.name}</h3>
+                <button
+                    onClick={() => onToggleSave(tool._id)}
+                    className={`save-btn ${isSaved ? 'saved' : ''}`}
+                >
+                    {isSaved ? '★' : '☆'}
+                </button>
+            </div>
+            <span className="tool-category">{tool.category}</span>
+
+            {expanded && <p className="tool-description">{tool.description}</p>}
+
+            <button
+                onClick={() => setExpanded(!expanded)}
+                className="know-more-btn"
+            >
+                {expanded ? "Show Less" : "Know More"}
+            </button>
+
+            <div className="tool-footer">
+                <span className="tool-pricing">{tool.pricing}</span>
+                <a href={tool.link} target="_blank" className="tool-link">Visit Tool →</a>
+            </div>
+        </div>
+    );
+};
+
 export default function Tools() {
     const [tools, setTools] = useState([]);
     const [filteredTools, setFilteredTools] = useState([]);
@@ -131,23 +164,12 @@ export default function Tools() {
             ) : (
                 <div className="tools-grid">
                     {filteredTools.map((tool: any, index: number) => (
-                        <div key={index} className="tool-card">
-                            <div className="tool-header">
-                                <h3 className="tool-name">{tool.name}</h3>
-                                <button
-                                    onClick={() => handleSaveTool(tool._id)}
-                                    className={`save-btn ${isSaved(tool._id) ? 'saved' : ''}`}
-                                >
-                                    {isSaved(tool._id) ? '★' : '☆'}
-                                </button>
-                            </div>
-                            <span className="tool-category">{tool.category}</span>
-                            <p className="tool-description">{tool.description}</p>
-                            <div className="tool-footer">
-                                <span className="tool-pricing">{tool.pricing}</span>
-                                <a href={tool.link} target="_blank" className="tool-link">Visit Tool →</a>
-                            </div>
-                        </div>
+                        <ToolCard
+                            key={index}
+                            tool={tool}
+                            isSaved={isSaved(tool._id)}
+                            onToggleSave={handleSaveTool}
+                        />
                     ))}
                 </div>
             )}

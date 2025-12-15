@@ -9,6 +9,7 @@ export default function Navbar() {
     const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [theme, setTheme] = useState("light");
 
     useEffect(() => {
         const handleScroll = () => {
@@ -16,6 +17,19 @@ export default function Navbar() {
         };
 
         window.addEventListener("scroll", handleScroll);
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+        if (savedTheme) {
+            setTheme(savedTheme);
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        } else if (prefersDark) {
+            setTheme("dark");
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
@@ -52,6 +66,13 @@ export default function Navbar() {
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
+    };
+
+    const toggleTheme = () => {
+        const newTheme = theme === "light" ? "dark" : "light";
+        setTheme(newTheme);
+        document.documentElement.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
     };
 
     const isActive = (path: string) => pathname === path;
@@ -101,12 +122,30 @@ export default function Navbar() {
                             <span>Learn</span>
                         </Link>
                         <Link
+                            href="/resources"
+                            className={`nav-link ${isActive("/resources") ? "active" : ""}`}
+                        >
+                            <span className="link-icon">🗂️</span>
+                            <span>Resources</span>
+                        </Link>
+                        <Link
                             href="/profile"
                             className={`nav-link ${isActive("/profile") ? "active" : ""}`}
                         >
                             <span className="link-icon">👤</span>
                             <span>Profile</span>
                         </Link>
+
+
+
+                        <button
+                            onClick={toggleTheme}
+                            className="theme-toggle"
+                            aria-label="Toggle theme"
+                        >
+                            {theme === "light" ? "🌙" : "☀️"}
+                        </button>
+
                         <button onClick={handleLogout} className="logout-btn">
                             <span className="btn-icon">🚪</span>
                             <span>Logout</span>

@@ -7,11 +7,11 @@ import ResourceCard from "../../components/resources/ResourceCard";
 import { Resource, SortOption } from "../../types/resource";
 import "./resources.css";
 
+
 const CATEGORIES = [
     "All Resources",
-    "Bookmarked",
+    "Channel",
     "Free Course",
-    "AI Tool",
     "Practice Platform",
     "GitHub Repository",
     "AI Newsletter",
@@ -27,10 +27,17 @@ export default function ResourcesPage() {
     const [resources, setResources] = useState<Resource[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
+
+    // Onboarding Context
+
+
     const [activeCategory, setActiveCategory] = useState("All Resources");
     const [activeDifficulty, setActiveDifficulty] = useState("All Levels");
-    const [sortBy, setSortBy] = useState<SortOption>("Recommended");
+    const [sortBy, setSortBy] = useState<SortOption>("Newest");
     const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
+
+    // Effect to set "For You" if personalized
+
 
     // Load initial data and bookmarks
     useEffect(() => {
@@ -90,7 +97,10 @@ export default function ResourcesPage() {
             result = result.filter(r => r.Type === activeCategory || (activeCategory === "eBooks & Guides" && r.Type === "eBook"));
         }
 
-        // 3. Difficulty Filter
+        // 3. Difficulty Filter (Only apply if NOT in "For You" or if user manually changed it?)
+        // Let's allow manual override even in "For You" if they want specific level. 
+        // But if "All Levels", let "For You" logic prevail? 
+        // Actually, let's strictly respect the dropdown if it's NOT "All Levels".
         if (activeDifficulty !== "All Levels") {
             result = result.filter(r => r.Difficulty === activeDifficulty);
         }
@@ -100,10 +110,6 @@ export default function ResourcesPage() {
             switch (sortBy) {
                 case "Newest":
                     return new Date(b.DateAdded).getTime() - new Date(a.DateAdded).getTime();
-                case "Recommended":
-                    // Y comes before N
-                    if (a.Recommended === b.Recommended) return 0;
-                    return a.Recommended === "Y" ? -1 : 1;
                 case "Alphabetical":
                     return a.ResourceName.localeCompare(b.ResourceName);
                 case "Difficulty":
@@ -135,6 +141,9 @@ export default function ResourcesPage() {
 
         counts["All Resources"] = baseForCounts.length;
         counts["Bookmarked"] = baseForCounts.filter(r => bookmarkedIds.has(r.ResourceName)).length;
+
+        // Count for "For You" - Replicate logic briefly
+
 
         baseForCounts.forEach(r => {
             counts[r.Type] = (counts[r.Type] || 0) + 1;
@@ -209,7 +218,6 @@ export default function ResourcesPage() {
                                     onChange={(e) => setSortBy(e.target.value as SortOption)}
                                     className="sort-select"
                                 >
-                                    <option value="Recommended">Recommended</option>
                                     <option value="Newest">Newest First</option>
                                     <option value="Alphabetical">Alphabetical</option>
                                     <option value="Difficulty">Difficulty (Low-High)</option>

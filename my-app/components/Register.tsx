@@ -10,6 +10,7 @@ const Register = () => {
     const [email, setMail] = useState("");
     const [password, setPassword] = useState("");
     const [msg, setMsg] = useState("");
+    const [msgType, setMsgType] = useState("");
 
 
     const handleRegister = async (e: React.FormEvent) => {
@@ -17,10 +18,12 @@ const Register = () => {
 
         if (!name || !email || !password) {
             setMsg("Please fill all fields");
+            setMsgType("error");
             return;
         }
 
         setMsg("Loading...");
+        setMsgType("loading");
 
         try {
             const res = await fetch("/api/register", {
@@ -35,14 +38,17 @@ const Register = () => {
 
             if (!res.ok) {
                 setMsg(data.message || "Registration failed");
+                setMsgType("error");
                 return;
             }
 
             setMsg("Registered successfully");
+            setMsgType("success");
             router.push("/login")
 
         } catch (error) {
             setMsg("Something went wrong");
+            setMsgType("error");
 
         }
 
@@ -94,7 +100,7 @@ const Register = () => {
 
                     <button type='submit' className="register-btn">Register</button>
 
-                    {msg && <p className="message-text">{msg}</p>}
+                    {msg && <p className={`message-text ${msgType}`}>{msg}</p>}
 
                     <p className="login-text">
                         Already have an account?

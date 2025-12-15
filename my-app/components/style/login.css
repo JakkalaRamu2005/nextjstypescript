@@ -86,13 +86,26 @@
 
 .message-text {
     text-align: center;
-    color: #dc2626;
     font-size: 0.95rem;
     margin-top: 1rem;
     font-weight: 500;
-    background: #fee2e2;
     padding: 10px;
     border-radius: var(--radius-sm);
+}
+
+.message-text.error {
+    color: #dc2626;
+    background: #fee2e2;
+}
+
+.message-text.success {
+    color: #15803d;
+    background: #dcfce7;
+}
+
+.message-text.loading {
+    color: #1d4ed8;
+    background: #dbeafe;
 }
 
 .form-links {

@@ -30,6 +30,8 @@ export default function LearnPage() {
     // Expanded Cards State
     const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
 
+
+
     useEffect(() => {
         async function fetchData() {
             try {

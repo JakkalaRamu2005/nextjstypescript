@@ -11,16 +11,19 @@ const Login = () => {
     const [email, setMail] = useState("");
     const [password, setPassword] = useState("");
     const [msg, setMsg] = useState("");
+    const [msgType, setMsgType] = useState("");
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!email || !password) {
             setMsg("Please fill all fields");
+            setMsgType("error");
             return;
         }
 
         setMsg("Loading ....")
+        setMsgType("loading");
 
         try {
             const res = await fetch("/api/login", {
@@ -37,14 +40,17 @@ const Login = () => {
 
             if (!res.ok) {
                 setMsg(data.message || "login failed");
+                setMsgType("error");
                 return;
             }
 
             setMsg("Login successful");
+            setMsgType("success");
             router.push("/")
 
         } catch (error) {
             setMsg("Something went wrong");
+            setMsgType("error");
         }
     }
 
@@ -81,7 +87,7 @@ const Login = () => {
 
                     <button type='submit' className="login-btn">Login</button>
 
-                    {msg && <p className="message-text">{msg}</p>}
+                    {msg && <p className={`message-text ${msgType}`}>{msg}</p>}
 
                     <div className="form-links">
                         <p className="register-text">
