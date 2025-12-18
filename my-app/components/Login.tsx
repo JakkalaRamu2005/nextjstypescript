@@ -2,6 +2,8 @@
 import "./style/login.css"
 import { useState } from 'react'
 import { useRouter } from "next/navigation"
+import { signIn } from "next-auth/react";
+import { FcGoogle } from "react-icons/fc";
 
 
 const Login = () => {
@@ -86,6 +88,15 @@ const Login = () => {
                     </div>
 
                     <button type='submit' className="login-btn">Login</button>
+
+                    <button
+                        type="button"
+                        className="google-btn"
+                        onClick={() => signIn("google", { callbackUrl: "/" })}
+                    >
+                        <FcGoogle size={22} />
+                        LOG IN WITH GOOGLE
+                    </button>
 
                     {msg && <p className={`message-text ${msgType}`}>{msg}</p>}
 

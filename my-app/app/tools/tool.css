@@ -111,6 +111,70 @@
     border-color: var(--secondary-color);
 }
 
+/* Share View Button */
+.share-view-btn {
+    padding: 10px 18px;
+    background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.share-view-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.share-view-btn:active {
+    transform: translateY(0);
+}
+
+/* Toast Notification */
+.toast-notification {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 16px 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    font-size: 0.95rem;
+    font-weight: 500;
+    animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.7s;
+    max-width: 90%;
+    text-align: center;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+    }
+}
+
 /* Results Count */
 .results-count {
     text-align: center;
@@ -186,6 +250,44 @@
     flex: 1;
 }
 
+/* Tool Actions Container */
+.tool-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Share Button Icon */
+.share-btn-icon {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+    transition: var(--transition-normal);
+    padding: 6px;
+    line-height: 1;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.share-btn-icon:hover {
+    color: var(--secondary-color);
+    background: rgba(102, 126, 234, 0.1);
+    transform: scale(1.1);
+}
+
+.share-btn-icon:active {
+    transform: scale(0.95);
+}
+
+.share-btn-icon svg {
+    display: block;
+}
+
+/* Save Button */
 .save-btn {
     background: transparent;
     border: none;
@@ -345,6 +447,11 @@
     .category-filter {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .share-view-btn {
+        width: 100%;
+        justify-content: center;
     }
 
     .tools-grid {

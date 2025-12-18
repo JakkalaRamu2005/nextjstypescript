@@ -84,6 +84,29 @@
     box-shadow: var(--shadow-lg);
 }
 
+.google-btn {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    color: #374151;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.google-btn:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
 .message-text {
     text-align: center;
     font-size: 0.95rem;

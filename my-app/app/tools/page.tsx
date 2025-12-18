@@ -1,20 +1,39 @@
 "use client"
 import { useState, useEffect } from "react"
+import { useSearchParams, useRouter } from "next/navigation"
+import ShareModal from "@/components/ShareModal"
 import "./tool.css"
 
-const ToolCard = ({ tool, isSaved, onToggleSave }: { tool: any, isSaved: boolean, onToggleSave: (id: string) => void }) => {
+const ToolCard = ({ tool, isSaved, onToggleSave, onShare }: {
+    tool: any,
+    isSaved: boolean,
+    onToggleSave: (id: string) => void,
+    onShare: (tool: any) => void
+}) => {
     const [expanded, setExpanded] = useState(false);
 
     return (
         <div className="tool-card">
             <div className="tool-header">
                 <h3 className="tool-name">{tool.name}</h3>
-                <button
-                    onClick={() => onToggleSave(tool._id)}
-                    className={`save-btn ${isSaved ? 'saved' : ''}`}
-                >
-                    {isSaved ? '★' : '☆'}
-                </button>
+                <div className="tool-actions">
+                    <button
+                        onClick={() => onShare(tool)}
+                        className="share-btn-icon"
+                        title="Share this tool"
+                    >
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                            <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
+                        </svg>
+                    </button>
+                    <button
+                        onClick={() => onToggleSave(tool._id)}
+                        className={`save-btn ${isSaved ? 'saved' : ''}`}
+                        title={isSaved ? "Remove from saved" : "Save tool"}
+                    >
+                        {isSaved ? '★' : '☆'}
+                    </button>
+                </div>
             </div>
             <span className="tool-category">{tool.category}</span>
 
@@ -36,12 +55,28 @@ const ToolCard = ({ tool, isSaved, onToggleSave }: { tool: any, isSaved: boolean
 };
 
 export default function Tools() {
+    const searchParams = useSearchParams();
+    const router = useRouter();
+
     const [tools, setTools] = useState([]);
     const [filteredTools, setFilteredTools] = useState([]);
     const [savedTools, setSavedTools] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchText, setSearchText] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All");
+
+    // Share Modal State
+    const [shareModalOpen, setShareModalOpen] = useState(false);
+    const [shareData, setShareData] = useState<{ url: string; title: string }>({ url: "", title: "" });
+
+    // Initialize from URL parameters
+    useEffect(() => {
+        const urlSearch = searchParams.get('search');
+        const urlCategory = searchParams.get('category');
+
+        if (urlSearch) setSearchText(urlSearch);
+        if (urlCategory) setSelectedCategory(urlCategory);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const fetchTools = async () => {
         try {
@@ -92,6 +127,34 @@ export default function Tools() {
 
         setFilteredTools(filtered);
         setCurrentPage(1); // Reset to first page on filter change
+    };
+
+    // Share functionality
+    const handleShareTool = (tool: any) => {
+        const baseUrl = window.location.origin + window.location.pathname;
+        const shareUrl = `${baseUrl}?search=${encodeURIComponent(tool.name)}`;
+
+        setShareData({
+            url: shareUrl,
+            title: `Check out ${tool.name} - ${tool.category} AI Tool`
+        });
+        setShareModalOpen(true);
+    };
+
+    const handleShareCurrentView = () => {
+        const baseUrl = window.location.origin + window.location.pathname;
+        const params = new URLSearchParams();
+
+        if (searchText) params.set('search', searchText);
+        if (selectedCategory !== "All") params.set('category', selectedCategory);
+
+        const shareUrl = params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
+        const title = params.toString()
+            ? `AI Tools - ${selectedCategory !== "All" ? selectedCategory : "All Categories"}`
+            : "AI Tools Collection - Discover Amazing AI Tools";
+
+        setShareData({ url: shareUrl, title });
+        setShareModalOpen(true);
     };
 
     // Pagination Logic
@@ -194,6 +257,14 @@ export default function Tools() {
 
     return (
         <div className="tools-container">
+            {/* Share Modal */}
+            <ShareModal
+                isOpen={shareModalOpen}
+                onClose={() => setShareModalOpen(false)}
+                shareUrl={shareData.url}
+                title={shareData.title}
+            />
+
             <h1 className="tools-title">AI Tools Collection</h1>
             <p className="tools-subtitle">Discover and save your favorite AI tools</p>
 
@@ -222,6 +293,14 @@ export default function Tools() {
                         ))}
                     </select>
                 </div>
+
+                <button
+                    onClick={handleShareCurrentView}
+                    className="share-view-btn"
+                    title="Share current filtered view"
+                >
+                    🔗 Share View
+                </button>
             </div>
 
             <p className="results-count">
@@ -244,6 +323,7 @@ export default function Tools() {
                                 tool={tool}
                                 isSaved={isSaved(tool._id)}
                                 onToggleSave={handleSaveTool}
+                                onShare={handleShareTool}
                             />
                         ))}
                     </div>

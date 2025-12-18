@@ -1,15 +1,19 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import "./style/navbar.css"
 
 export default function Navbar() {
     const router = useRouter();
     const pathname = usePathname();
+    const { data: session } = useSession();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [theme, setTheme] = useState("light");
+    const profileRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -36,7 +40,22 @@ export default function Navbar() {
     // Close menu when route changes
     useEffect(() => {
         setIsMenuOpen(false); // eslint-disable-line
+        setIsProfileOpen(false);
     }, [pathname]);
+
+    // Close profile dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+                setIsProfileOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     // Prevent body scroll when menu is open
     useEffect(() => {
@@ -128,16 +147,6 @@ export default function Navbar() {
                             <span className="link-icon">🗂️</span>
                             <span>Resources</span>
                         </Link>
-                        <Link
-                            href="/profile"
-                            className={`nav-link ${isActive("/profile") ? "active" : ""}`}
-                        >
-                            <span className="link-icon">👤</span>
-                            <span>Profile</span>
-                        </Link>
-
-
-
                         <button
                             onClick={toggleTheme}
                             className="theme-toggle"
@@ -146,10 +155,45 @@ export default function Navbar() {
                             {theme === "light" ? "🌙" : "☀️"}
                         </button>
 
-                        <button onClick={handleLogout} className="logout-btn">
-                            <span className="btn-icon">🚪</span>
-                            <span>Logout</span>
-                        </button>
+                        {session ? (
+                            <div className="profile-dropdown-container" ref={profileRef}>
+                                <button
+                                    className="profile-btn"
+                                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                                >
+                                    {session.user?.image ? (
+                                        <img
+                                            src={session.user.image}
+                                            alt="Profile"
+                                            className="profile-avatar"
+                                        />
+                                    ) : (
+                                        <div className="profile-initials">
+                                            {session.user?.name?.charAt(0) || "U"}
+                                        </div>
+                                    )}
+                                    <span className="profile-name">{session.user?.name}</span>
+                                    <span className="dropdown-arrow">▼</span>
+                                </button>
+                                {isProfileOpen && (
+                                    <div className="profile-dropdown-menu">
+                                        <div className="profile-header-mobile">
+                                            <p className="user-email">{session.user?.email}</p>
+                                        </div>
+                                        <Link href="/profile" className="dropdown-item">
+                                            <span>👤</span> Your Profile
+                                        </Link>
+                                        <button onClick={() => signOut()} className="dropdown-item logout-item">
+                                            <span>Sign out</span>
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <Link href="/login" className="login-nav-btn">
+                                <span>Login</span>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </nav>

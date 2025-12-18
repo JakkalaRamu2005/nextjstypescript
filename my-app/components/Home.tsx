@@ -9,15 +9,7 @@ interface Stats {
   tools: number;
 }
 
-interface FeaturedItem {
-  id: string;
-  type: "course" | "video" | "tool" | "project";
-  title: string;
-  description: string;
-  link: string;
-  image?: string;
-  category?: string;
-}
+
 
 export default function HomePage() {
   const [stats, setStats] = useState<Stats>({
@@ -25,7 +17,7 @@ export default function HomePage() {
     videos: 0,
     tools: 0,
   });
-  const [featured, setFeatured] = useState<FeaturedItem[]>([]);
+
   const [loading, setLoading] = useState(true);
 
   const fetchHomeData = async () => {
@@ -37,40 +29,7 @@ export default function HomePage() {
           tools: 120,
         });
 
-        setFeatured([
-          {
-            id: "1",
-            type: "course",
-            title: "Complete Prompt Engineering Masterclass",
-            description: "Learn prompt engineering from basics to advanced in 30 days",
-            link: "/learn/prompt-engineering",
-            category: "Featured Course",
-          },
-          {
-            id: "2",
-            type: "video",
-            title: "Building AI Agents with ChatGPT",
-            description: "Step-by-step tutorial on creating custom AI agents",
-            link: "/youtube",
-            category: "Trending Video",
-          },
-          {
-            id: "3",
-            type: "tool",
-            title: "Claude 3.5 Sonnet",
-            description: "Anthropic's latest AI model with enhanced coding abilities",
-            link: "/tools",
-            category: "Hot Tool",
-          },
-          {
-            id: "4",
-            type: "project",
-            title: "AI-Powered Resume Builder",
-            description: "Student project showcasing AI integration",
-            link: "/projects",
-            category: "Community Project",
-          },
-        ]);
+
 
         setLoading(false);
       }, 1000);
@@ -119,20 +78,7 @@ export default function HomePage() {
     },
   ];
 
-  const getFeaturedIcon = (type: string) => {
-    switch (type) {
-      case "course":
-        return "📚";
-      case "video":
-        return "🎥";
-      case "tool":
-        return "🛠️";
-      case "project":
-        return "🚀";
-      default:
-        return "✨";
-    }
-  };
+
 
   if (loading) {
     return (
@@ -213,33 +159,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured This Week */}
-      <section className="featured">
-        <h2 className="section-title">Featured This Week</h2>
-        <p className="section-subtitle">
-          Handpicked resources to accelerate your AI learning journey
-        </p>
 
-        <div className="featured-grid">
-          {featured.map((item) => (
-            <Link key={item.id} href={item.link} className="featured-card">
-              <div className="featured-header">
-                <span className="featured-icon">
-                  {getFeaturedIcon(item.type)}
-                </span>
-                <span className="featured-category">{item.category}</span>
-              </div>
-              <h3 className="featured-title">{item.title}</h3>
-              <p className="featured-description">{item.description}</p>
-              <div className="featured-footer">
-                <span className="featured-link">
-                  Learn more <span className="arrow">→</span>
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
 
 
     </div>

@@ -8,6 +8,8 @@ import "./globals.css"
 // ... existing code ...
 
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { NextAuthProvider } from "@/components/NextAuthProvider";
 
 export default function RootLayout({
   children,
@@ -23,8 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {showNavbar && <Navbar />}
-        {children}
+        <NextAuthProvider>
+          {showNavbar && <Navbar />}
+          {children}
+          {showNavbar && <Footer />}
+        </NextAuthProvider>
       </body>
     </html>
   );

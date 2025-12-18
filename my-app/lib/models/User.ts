@@ -7,22 +7,30 @@ const UserSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true, 
+        required: true,
         unique: true,
     },
     password: {
         type: String,
-        required: true,
+        required: false, // Optional for Google Sign-In
+    },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true,
+    },
+    image: {
+        type: String,
+    },
+    profileImage: { // Keeping for compatibility if needed
+        type: String,
+        default: "",
     },
     place: {
         type: String,
         default: "",
     },
     bio: {
-        type: String,
-        default: "",
-    },
-    profileImage: {
         type: String,
         default: "",
     },
@@ -38,6 +46,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
-});
+}, { timestamps: true });
 
 export default mongoose.models.User || mongoose.model("User", UserSchema);

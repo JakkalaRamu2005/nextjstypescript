@@ -35,6 +35,8 @@ export default function ResourcesPage() {
     const [activeDifficulty, setActiveDifficulty] = useState("All Levels");
     const [sortBy, setSortBy] = useState<SortOption>("Newest");
     const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 9;
 
     // Effect to set "For You" if personalized
 
@@ -122,6 +124,36 @@ export default function ResourcesPage() {
             }
         });
     }, [resources, searchQuery, activeCategory, activeDifficulty, sortBy, bookmarkedIds]);
+
+    // Reset pagination when filters change
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchQuery, activeCategory, activeDifficulty, sortBy]);
+
+    // Pagination Logic
+    const indexOfLastResource = currentPage * itemsPerPage;
+    const indexOfFirstResource = indexOfLastResource - itemsPerPage;
+    const currentResources = filteredResources.slice(indexOfFirstResource, indexOfLastResource);
+    const totalPages = Math.ceil(filteredResources.length / itemsPerPage);
+
+    const handlePageChange = (pageNumber: number) => {
+        setCurrentPage(pageNumber);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const getPageNumbers = () => {
+        if (totalPages <= 7) {
+            return Array.from({ length: totalPages }, (_, i) => i + 1);
+        }
+
+        if (currentPage <= 4) {
+            return [1, 2, 3, 4, 5, '...', totalPages];
+        } else if (currentPage >= totalPages - 3) {
+            return [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+        } else {
+            return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+        }
+    };
 
     // Calculate Counts for Tabs
     const categoryCounts = useMemo(() => {
@@ -238,18 +270,44 @@ export default function ResourcesPage() {
                         ))}
                     </div>
                 ) : filteredResources.length > 0 ? (
-                    <div className="resources-grid">
-                        {filteredResources.map((resource, idx) => (
-                            <ResourceCard
-                                key={`${resource.ResourceName}-${idx}`}
-                                resource={resource}
-                                index={idx}
-                                isBookmarked={bookmarkedIds.has(resource.ResourceName)}
-                                onToggleBookmark={toggleBookmark}
-                            />
-                        ))}
-                    </div>
+                    <>
+                        <div className="resources-grid">
+                            {currentResources.map((resource, idx) => (
+                                <ResourceCard
+                                    key={`${resource.ResourceName}-${idx}`}
+                                    resource={resource}
+                                    index={idx}
+                                    isBookmarked={bookmarkedIds.has(resource.ResourceName)}
+                                    onToggleBookmark={toggleBookmark}
+                                />
+                            ))}
+                        </div>
+
+                        {totalPages > 1 && (
+                            <div className="pagination-container">
+                                {getPageNumbers().map((number, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => typeof number === 'number' ? handlePageChange(number) : null}
+                                        className={`pagination-btn ${currentPage === number ? 'active' : ''} ${number === '...' ? 'dots' : ''}`}
+                                        disabled={number === '...'}
+                                    >
+                                        {number}
+                                    </button>
+                                ))}
+
+                                <button
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                    className="pagination-btn next-btn"
+                                >
+                                    Next &gt;
+                                </button>
+                            </div>
+                        )}
+                    </>
                 ) : (
+                    // Empty State
                     // Empty State
                     <div className="empty-state">
                         <div className="empty-icon">
