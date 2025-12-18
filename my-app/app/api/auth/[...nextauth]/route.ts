@@ -10,6 +10,14 @@ const authOptions: AuthOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
         }),
     ],
+    secret: process.env.NEXTAUTH_SECRET,
+    session: {
+        strategy: "jwt",
+    },
+    pages: {
+        signIn: "/login",
+        error: "/login",
+    },
     callbacks: {
         async signIn({ user, account }) {
             if (account?.provider === "google") {
@@ -32,6 +40,20 @@ const authOptions: AuthOptions = {
                 }
             }
             return true;
+        },
+        async jwt({ token, user, account }) {
+            if (user) {
+                token.id = user.id;
+                token.email = user.email;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            if (token && session.user) {
+                session.user.id = token.id as string;
+                session.user.email = token.email as string;
+            }
+            return session;
         },
     },
 };
