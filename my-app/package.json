@@ -1,12 +1,14 @@
 {
-  "name": "my-app",
-  "version": "0.1.0",
+  "name": "ai-learning-hub",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.10",
